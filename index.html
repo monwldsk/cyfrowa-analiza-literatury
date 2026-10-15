@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="assets/favicon.png" />
+
+    <title>Cyfrowa analiza literatury</title>
+    <meta name="description" content="Zestaw eksperymentalnych narzędzi do cyfrowej analizy literatury." />
+
+    <style>
+        :root {
+            --navy: #06245c;
+            --navy-2: #0a336f;
+            --blue: #1f66e5;
+            --blue-2: #4b87f2;
+            --blue-soft: #edf5ff;
+            --blue-soft-2: #f7fbff;
+            --text: #173054;
+            --muted: #6f819d;
+            --line: #d9e6f7;
+            --surface: rgba(255, 255, 255, 0.92);
+            --surface-solid: #ffffff;
+            --pink: #fff0f4;
+            --pink-text: #df486f;
+            --violet: #f4ecff;
+            --violet-text: #8a4ed1;
+            --shadow: 0 18px 50px rgba(28, 68, 126, 0.09);
+            --radius-xl: 30px;
+            --radius-lg: 22px;
+            --radius-md: 15px;
+            --max-width: 1240px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            color: var(--text);
+            font-family:
+                Inter,
+                ui-sans-serif,
+                system-ui,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                sans-serif;
+            background:
+                radial-gradient(circle at 78% 8%, rgba(54, 118, 227, 0.10), transparent 22%),
+                radial-gradient(circle at 12% 18%, rgba(79, 139, 239, 0.06), transparent 24%),
+                linear-gradient(180deg, #fbfdff 0%, #f8fbff 45%, #fbfdff 100%);
+            line-height: 1.5;
+            min-height: 100vh;
+        }
+
+        a {
+            color: inherit;
+        }
+
+        img {
+            display: block;
+            max-width: 100%;
+        }
+
+        button,
+        a {
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .page-shell {
+            width: min(var(--max-width), calc(100% - 36px));
+            margin: 0 auto;
+        }
+
+        .hero {
+            display: grid;
+            grid-template-columns: minmax(0, 0.95fr) minmax(420px, 1.05fr);
+            gap: 58px;
+            align-items: center;
+            padding: 56px 0 66px;
+        }
+
+        .hero-copy {
+            max-width: 610px;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 18px;
+            color: var(--blue);
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 0.28em;
+            text-transform: uppercase;
+        }
+
+        .eyebrow span:not(:last-child)::after {
+            content: "·";
+            margin-left: 10px;
+            color: #78a4ef;
+        }
+
+        .hero h1 {
+            margin: 0;
+            color: var(--navy);
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: clamp(54px, 6.1vw, 88px);
+            line-height: 0.9;
+            letter-spacing: -0.055em;
+            font-weight: 700;
+        }
+
+        .hero h1 .accent {
+            display: block;
+            color: var(--blue);
+        }
+
+        .hero-lead {
+            max-width: 560px;
+            margin: 24px 0 0;
+            color: #2e4e79;
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: clamp(19px, 2vw, 24px);
+            line-height: 1.42;
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            min-height: 48px;
+            padding: 0 25px;
+            border-radius: 13px;
+            border: 1px solid transparent;
+            text-decoration: none;
+            font-family: Georgia, "Times New Roman", serif;
+            font-weight: 700;
+            transition:
+                transform 0.18s ease,
+                box-shadow 0.18s ease,
+                background 0.18s ease,
+                border-color 0.18s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            color: #fff;
+            background: linear-gradient(135deg, #0a4d9e, #1f66e5);
+            box-shadow: 0 12px 30px rgba(31, 102, 229, 0.18);
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 16px 34px rgba(31, 102, 229, 0.25);
+        }
+
+        .btn-secondary {
+            color: var(--navy);
+            border-color: #8eb7ef;
+            background: rgba(255, 255, 255, 0.76);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--blue);
+            background: #fff;
+        }
+
+        .hero-visual {
+            position: relative;
+            min-height: 430px;
+            display: grid;
+            place-items: center;
+        }
+
+        .hero-visual::before {
+            content: "";
+            position: absolute;
+            width: 75%;
+            aspect-ratio: 1;
+            border-radius: 50%;
+            background: radial-gradient(circle,
+                    rgba(45, 114, 225, 0.13),
+                    rgba(45, 114, 225, 0.025) 58%,
+                    transparent 72%);
+            filter: blur(2px);
+        }
+
+        .hero-banner {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-height: 430px;
+            object-fit: contain;
+            object-position: center;
+            filter: drop-shadow(0 18px 35px rgba(45, 82, 141, 0.06));
+        }
+
+        .section-kicker {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+            color: var(--blue);
+            font-size: 16px;
+            font-weight: 800;
+            letter-spacing: 0.26em;
+            text-transform: uppercase;
+            margin: auto;
+        }
+
+        .projects {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 20px;
+            padding-bottom: 26px;
+        }
+
+        .project-card {
+            position: relative;
+            min-height: 290px;
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: minmax(0, 0.95fr) minmax(230px, 1.05fr);
+            gap: 16px;
+            border: 1px solid var(--line);
+            border-radius: var(--radius-lg);
+            background:
+                linear-gradient(145deg, rgba(255, 255, 255, 0.96), rgba(250, 253, 255, 0.96));
+            box-shadow: 0 12px 32px rgba(32, 77, 140, 0.055);
+            transition:
+                transform 0.22s ease,
+                box-shadow 0.22s ease,
+                border-color 0.22s ease;
+        }
+
+        .project-card:hover {
+            transform: translateY(-4px);
+            border-color: #bfd5f2;
+            box-shadow: var(--shadow);
+        }
+
+        .project-card::after {
+            content: "";
+            position: absolute;
+            inset: auto -50px -70px auto;
+            width: 210px;
+            aspect-ratio: 1;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(66, 128, 230, 0.08), transparent 72%);
+            pointer-events: none;
+        }
+
+        .project-copy {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            padding: 28px 0 28px 28px;
+            min-width: 0;
+        }
+
+        .project-meta {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .project-number {
+            color: var(--blue);
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 20px;
+        }
+
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            min-height: 28px;
+            padding: 0 13px;
+            border-radius: 999px;
+            background: #edf4ff;
+            color: var(--blue);
+            font-size: 10px;
+            font-weight: 850;
+            letter-spacing: 0.11em;
+            text-transform: uppercase;
+        }
+
+        .tag.warm {
+            background: var(--pink);
+            color: var(--pink-text);
+        }
+
+        .tag.violet {
+            background: var(--violet);
+            color: var(--violet-text);
+        }
+
+        .project-card h3 {
+            margin: 16px 0 7px;
+            color: var(--navy);
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: clamp(28px, 2.6vw, 40px);
+            line-height: 1.02;
+            letter-spacing: -0.035em;
+        }
+
+        .project-card p {
+            margin: 0;
+            color: #526b8f;
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 17px;
+            line-height: 1.45;
+        }
+
+        .project-card .card-action {
+            margin-top: auto;
+            padding-top: 20px;
+        }
+
+        .card-link {
+            width: fit-content;
+            min-height: 45px;
+            padding: 0 18px;
+            font-size: 15px;
+        }
+
+        .project-visual {
+            position: relative;
+            min-height: 100%;
+            display: grid;
+            place-items: center;
+            padding: 18px 18px 18px 0;
+        }
+
+        /* .project-visual::before {
+            content: "";
+            position: absolute;
+            width: 84%;
+            aspect-ratio: 1.2;
+            border-radius: 45% 55% 50% 48%;
+            background:
+                radial-gradient(circle at 30% 35%, rgba(61, 130, 236, 0.12), transparent 58%),
+                linear-gradient(135deg, rgba(231, 242, 255, 0.72), rgba(247, 251, 255, 0.12));
+            transform: rotate(-4deg);
+        } */
+
+        .project-image {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            height: 220px;
+            object-fit: contain;
+        }
+
+        .status {
+            position: absolute;
+            top: 18px;
+            right: 18px;
+            z-index: 5;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            min-height: 28px;
+            padding: 0 12px;
+            border-radius: 999px;
+            background: #f1e6ff;
+            color: #8c49d1;
+            font-size: 10px;
+            font-weight: 850;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            border: 1px solid rgba(140, 73, 209, 0.08);
+        }
+
+        .disabled-btn {
+            pointer-events: none;
+            color: #9aaac0;
+            background: #edf2f8;
+            border-color: transparent;
+            box-shadow: none;
+        }
+
+
+        .development-strip {
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: 20px;
+            align-items: center;
+            margin: 18px auto;
+            padding: 16px 20px;
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            background:
+                linear-gradient(90deg, rgba(238, 246, 255, 0.95), rgba(251, 253, 255, 0.98));
+        }
+
+        .dev-icon {
+            display: grid;
+            place-items: center;
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+            color: var(--blue);
+            background: #fff;
+            border: 1px solid #d8e7fa;
+            font-size: 20px;
+            font-weight: 900;
+        }
+
+        .dev-copy strong {
+            display: block;
+            color: var(--navy);
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 17px;
+        }
+
+        .dev-copy span {
+            display: block;
+            margin-top: 2px;
+            color: #7486a0;
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 14px;
+        }
+
+        .about {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            margin: 18px auto;
+            padding: 42px;
+            border: 1px solid var(--line);
+            border-radius: 26px;
+            background: rgba(255, 255, 255, 0.76);
+            box-shadow: 0 10px 35px rgba(28, 68, 126, 0.05);
+        }
+
+        .about h2 {
+            margin: 0;
+            color: var(--navy);
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: clamp(32px, 4vw, 48px);
+            letter-spacing: -0.035em;
+        }
+
+        .about p {
+            margin: 0;
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 17px;
+            line-height: 1.65;
+        }
+
+
+        @media (max-width: 1020px) {
+            .hero {
+                grid-template-columns: 1fr;
+                gap: 30px;
+                padding-top: 42px;
+            }
+
+            .hero-copy {
+                max-width: 760px;
+                text-align: center;
+                margin: 0 16px;
+            }
+
+            .hero-visual {
+                min-height: 300px;
+            }
+
+            .hero-banner {
+                max-height: 330px;
+            }
+
+
+
+            .projects {
+                grid-template-columns: 1fr;
+            }
+
+            .project-card {
+                grid-template-columns: minmax(0, 0.9fr) minmax(260px, 1.1fr);
+            }
+
+            .about {
+                grid-template-columns: 1fr;
+                gap: 22px;
+            }
+        }
+
+        @media (max-width: 760px) {
+            .page-shell {
+                width: min(100% - 22px, var(--max-width));
+            }
+
+
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .nav {
+                position: absolute;
+                top: 64px;
+                left: 11px;
+                right: 11px;
+                display: none;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0;
+                padding: 10px;
+                border: 1px solid var(--line);
+                border-radius: 16px;
+                background: rgba(255, 255, 255, 0.98);
+                box-shadow: var(--shadow);
+            }
+
+            .nav.open {
+                display: flex;
+            }
+
+            .nav a {
+                padding: 13px 14px;
+                border-radius: 10px;
+            }
+
+            .nav a.active::after {
+                display: none;
+            }
+
+            .nav a:hover {
+                background: #f3f8ff;
+            }
+
+            .hero {
+                padding: 34px 0 46px;
+            }
+
+            .hero h1 {
+                font-size: clamp(48px, 16vw, 72px);
+            }
+
+            .hero-lead {
+                font-size: 19px;
+            }
+
+            .hero-actions {
+                align-items: stretch;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .hero-visual {
+                min-height: 220px;
+            }
+
+
+            .project-card {
+                grid-template-columns: 1fr;
+            }
+
+            .project-copy {
+                padding: 24px 24px 0;
+            }
+
+            .project-visual {
+                padding: 8px 18px 22px;
+            }
+
+            .project-image {
+                height: 190px;
+            }
+
+            .status {
+                top: 16px;
+                right: 16px;
+            }
+
+            .development-strip {
+                grid-template-columns: auto 1fr;
+            }
+
+            .development-strip .btn {
+                grid-column: 1 / -1;
+            }
+
+            .about {
+                padding: 28px 22px;
+            }
+
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 52px;
+            }
+
+            .eyebrow {
+                flex-wrap: wrap;
+                gap: 7px;
+                font-size: 10px;
+            }
+
+            .eyebrow span:not(:last-child)::after {
+                margin-left: 7px;
+            }
+
+            .project-card h3 {
+                font-size: 31px;
+            }
+
+            .project-card p {
+                font-size: 16px;
+            }
+
+            .footer-links {
+                flex-wrap: wrap;
+                gap: 14px 22px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                scroll-behavior: auto !important;
+                transition: none !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <main id="top">
+        <section class="page-shell hero">
+            <div class="hero-copy">
+                <div class="eyebrow" aria-label="Teksty, dane, nowe perspektywy badań">
+                    <span>Teksty</span>
+                    <span>Dane</span>
+                    <span>Nowe perspektywy badań</span>
+                </div>
+
+                <h1>
+                    Cyfrowa analiza
+                    <span class="accent">literatury</span>
+                </h1>
+
+                <p class="hero-lead">
+                    Zestaw eksperymentalnych narzędzi do badania tekstów literackich
+                    metodami cyfrowymi.
+                </p>
+
+                <div class="hero-actions">
+                    <a class="btn btn-primary" href="#narzedzia">
+                        Poznaj narzędzia
+                        <span aria-hidden="true">→</span>
+                    </a>
+
+                    <a class="btn btn-secondary" href="#o-projekcie">
+                        O projekcie
+                    </a>
+                </div>
+            </div>
+
+            <div class="hero-visual" aria-label="Grafika główna">
+                <img class="hero-banner" src="assets/baner-main.png" alt="Baner główny" />
+            </div>
+        </section>
+
+        <section class="page-shell projects" aria-label="Lista narzędzi" id="narzedzia">
+
+            <article class="project-card">
+                <div class="project-copy">
+                    <div class="project-meta">
+                        <span class="project-number">01</span>
+                        <span class="tag">Poetyka dramatu</span>
+                    </div>
+
+                    <h3>Analiza dramatu</h3>
+
+                    <p>
+                        Cyfrowa analiza dramatologiczno-wersologiczna (TXT i TEI/XML).
+                    </p>
+
+                    <div class="card-action">
+                        <a class="btn btn-primary card-link" href="https://monwldsk.github.io/analizuj_dramat/"
+                            target="_blank" rel="noopener noreferrer">
+                            Przejdź do narzędzia
+                            <span aria-hidden="true">→</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="project-visual">
+                    <img class="project-image" src="assets/box1.png" alt="Grafika dla narzędzia Analiza dramatu" />
+                </div>
+            </article>
+
+            <article class="project-card">
+                <div class="project-copy">
+                    <div class="project-meta">
+                        <span class="project-number">02</span>
+                        <span class="tag">Anagramy de Saussure’a</span>
+                    </div>
+
+                    <h3>Ślady słowa</h3>
+
+                    <p>
+                        Analiza „gier fonicznych” inspirowana koncepcją Ferdinanda de Saussure’a.
+                    </p>
+
+                    <div class="card-action">
+                        <a class="btn btn-primary card-link" href="https://monwldsk.github.io/anagramy-de-saussure/"
+                            target="_blank" rel="noopener noreferrer">
+                            Przejdź do narzędzia
+                            <span aria-hidden="true">→</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="project-visual">
+                    <img class="project-image" src="assets/box2.png" alt="Grafika dla narzędzia Ślady słowa" />
+                </div>
+            </article>
+
+            <article class="project-card">
+                <div class="project-copy">
+                    <div class="project-meta">
+                        <span class="project-number">03</span>
+                        <span class="tag">Wersologia</span>
+                    </div>
+
+                    <h3>Analiza wersyfikacji</h3>
+
+                    <p>
+                        Narzędzie dydaktyczne do nauki wersologii (m.in. w trybie gry, i symulacji kroków analizy
+                        metrycznej).
+                    </p>
+
+                    <div class="card-action">
+                        <a class="btn btn-primary card-link" href="#"
+                            aria-label="Przejdź do narzędzia Analiza wersyfikacyjna">
+                            Przejdź do narzędzia
+                            <span aria-hidden="true">→</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="project-visual">
+                    <img class="project-image" src="assets/box3.png"
+                        alt="Grafika dla narzędzia Analiza wersyfikacyjna" />
+                </div>
+            </article>
+            <article class="project-card">
+
+                <div class="project-copy">
+                    <div class="project-meta">
+                        <span class="project-number">04</span>
+                        <span class="tag violet">Rymy</span>
+                    </div>
+
+                    <h3>Słownik rymów</h3>
+
+                    <p>
+                        Wyszukuj rymy, analizuj brzmienia i odkrywaj fonetyczne powiązania.
+                    </p>
+
+                    <div class="card-action">
+                        <span class="btn card-link disabled-btn" aria-disabled="true">
+                            ◷&nbsp;&nbsp; Wkrótce
+                        </span>
+                    </div>
+                </div>
+
+                <div class="project-visual">
+                    <img class="project-image" src="assets/box4.png" alt="Grafika dla planowanego Słownika rymów" />
+                </div>
+            </article>
+
+        </section>
+
+        <section class="page-shell about" id="o-projekcie">
+            <p class="section-kicker">O projekcie</p>
+            <p>
+                Ta strona zbiera eksperymentalne narzędzia do cyfrowej analizy literatury.
+                Każdy moduł koncentruje się na innym aspekcie tekstu, ale wszystkie łączy
+                wspólny cel: tworzenie narzędzi, które pomagają zauważać struktury,
+                zależności i regularności trudne do uchwycenia przy lekturze tradycyjnej.
+            </p>
+        </section>
+        <section class="page-shell development-strip" aria-label="Informacja o rozwoju projektu">
+            <div class="dev-icon" aria-hidden="true"><img src="assets/work_in_progress.png" alt="icon"></div>
+
+            <div class="dev-copy">
+                <strong>Projekt rozwijany na bieżąco</strong>
+                <span>
+                    Projekt rośnie na bieżąco – rozwijam już dostępne narzędzia i przygotowuję nowe.
+                </span>
+            </div>
+
+            <a class="btn btn-secondary" href="https://github.com/monwldsk" target="_blank" rel="noopener noreferrer">
+                Zobacz na GitHub ↗
+            </a>
+        </section>
+    </main>
+
+
+    <script>
+        const menuToggle = document.getElementById("menuToggle");
+        const mainNav = document.getElementById("mainNav");
+
+        menuToggle.addEventListener("click", () => {
+            const isOpen = mainNav.classList.toggle("open");
+            menuToggle.setAttribute("aria-expanded", String(isOpen));
+            menuToggle.setAttribute(
+                "aria-label",
+                isOpen ? "Zamknij menu" : "Otwórz menu"
+            );
+        });
+
+        mainNav.querySelectorAll("a").forEach((link) => {
+            link.addEventListener("click", () => {
+                mainNav.classList.remove("open");
+                menuToggle.setAttribute("aria-expanded", "false");
+                menuToggle.setAttribute("aria-label", "Otwórz menu");
+            });
+        });
+    </script>
+</body>
+
+</html>
