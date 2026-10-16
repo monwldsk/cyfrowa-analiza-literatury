@@ -5,10 +5,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" href="assets/favicon.png" />
-
     <title>Cyfrowa analiza literatury</title>
     <meta name="description" content="Zestaw eksperymentalnych narzędzi do cyfrowej analizy literatury." />
-
     <style>
         :root {
             --navy: #06245c;
@@ -363,7 +361,6 @@
                 linear-gradient(135deg, rgba(231, 242, 255, 0.72), rgba(247, 251, 255, 0.12));
             transform: rotate(-4deg);
         } */
-
         .project-image {
             position: relative;
             z-index: 1;
@@ -399,7 +396,6 @@
             border-color: transparent;
             box-shadow: none;
         }
-
 
         .development-strip {
             display: grid;
@@ -469,7 +465,6 @@
             line-height: 1.65;
         }
 
-
         @media (max-width: 1020px) {
             .hero {
                 grid-template-columns: 1fr;
@@ -480,7 +475,15 @@
             .hero-copy {
                 max-width: 760px;
                 text-align: center;
-                margin: 0 16px;
+                width: 100%;
+                margin: 0 auto;
+            }
+
+            .eyebrow {
+                display: flex;
+                width: 100%;
+                justify-content: center;
+                text-align: center;
             }
 
             .hero-visual {
@@ -490,8 +493,6 @@
             .hero-banner {
                 max-height: 330px;
             }
-
-
 
             .projects {
                 grid-template-columns: 1fr;
@@ -511,8 +512,6 @@
             .page-shell {
                 width: min(100% - 22px, var(--max-width));
             }
-
-
 
             .menu-toggle {
                 display: block;
@@ -575,17 +574,32 @@
                 min-height: 220px;
             }
 
-
             .project-card {
                 grid-template-columns: 1fr;
+                padding-bottom: 82px;
             }
 
             .project-copy {
+                position: static;
                 padding: 24px 24px 0;
             }
 
+            .project-card .card-action {
+                position: absolute;
+                left: 24px;
+                right: 24px;
+                bottom: 22px;
+                z-index: 4;
+                margin-top: 0;
+                padding-top: 0;
+            }
+
+            .project-card .card-action .card-link {
+                width: 100%;
+            }
+
             .project-visual {
-                padding: 8px 18px 22px;
+                padding: 8px 18px 16px;
             }
 
             .project-image {
@@ -608,7 +622,6 @@
             .about {
                 padding: 28px 22px;
             }
-
         }
 
         @media (max-width: 480px) {
@@ -618,6 +631,7 @@
 
             .eyebrow {
                 flex-wrap: wrap;
+                justify-content: center;
                 gap: 7px;
                 font-size: 10px;
             }
@@ -650,7 +664,6 @@
 </head>
 
 <body>
-
     <main id="top">
         <section class="page-shell hero">
             <div class="hero-copy">
@@ -659,49 +672,39 @@
                     <span>Dane</span>
                     <span>Nowe perspektywy badań</span>
                 </div>
-
                 <h1>
                     Cyfrowa analiza
                     <span class="accent">literatury</span>
                 </h1>
-
                 <p class="hero-lead">
                     Zestaw eksperymentalnych narzędzi do badania tekstów literackich
                     metodami cyfrowymi.
                 </p>
-
                 <div class="hero-actions">
                     <a class="btn btn-primary" href="#narzedzia">
                         Poznaj narzędzia
                         <span aria-hidden="true">→</span>
                     </a>
-
                     <a class="btn btn-secondary" href="#o-projekcie">
                         O projekcie
                     </a>
                 </div>
             </div>
-
             <div class="hero-visual" aria-label="Grafika główna">
                 <img class="hero-banner" src="assets/baner-main.png" alt="Baner główny" />
             </div>
         </section>
-
         <section class="page-shell projects" aria-label="Lista narzędzi" id="narzedzia">
-
             <article class="project-card">
                 <div class="project-copy">
                     <div class="project-meta">
                         <span class="project-number">01</span>
                         <span class="tag">Poetyka dramatu</span>
                     </div>
-
                     <h3>Analiza dramatu</h3>
-
                     <p>
                         Cyfrowa analiza dramatologiczno-wersologiczna (TXT i TEI/XML).
                     </p>
-
                     <div class="card-action">
                         <a class="btn btn-primary card-link" href="https://monwldsk.github.io/analizuj_dramat/"
                             target="_blank" rel="noopener noreferrer">
@@ -710,25 +713,20 @@
                         </a>
                     </div>
                 </div>
-
                 <div class="project-visual">
                     <img class="project-image" src="assets/box1.png" alt="Grafika dla narzędzia Analiza dramatu" />
                 </div>
             </article>
-
             <article class="project-card">
                 <div class="project-copy">
                     <div class="project-meta">
                         <span class="project-number">02</span>
                         <span class="tag">Anagramy de Saussure’a</span>
                     </div>
-
                     <h3>Ślady słowa</h3>
-
                     <p>
                         Analiza „gier fonicznych” inspirowana koncepcją Ferdinanda de Saussure’a.
                     </p>
-
                     <div class="card-action">
                         <a class="btn btn-primary card-link" href="https://monwldsk.github.io/anagramy-de-saussure/"
                             target="_blank" rel="noopener noreferrer">
@@ -737,26 +735,21 @@
                         </a>
                     </div>
                 </div>
-
                 <div class="project-visual">
                     <img class="project-image" src="assets/box2.png" alt="Grafika dla narzędzia Ślady słowa" />
                 </div>
             </article>
-
             <article class="project-card">
                 <div class="project-copy">
                     <div class="project-meta">
                         <span class="project-number">03</span>
                         <span class="tag">Wersologia</span>
                     </div>
-
                     <h3>Analiza wersyfikacji</h3>
-
                     <p>
                         Narzędzie dydaktyczne do nauki wersologii (m.in. w trybie gry i symulacji kroków analizy
                         metrycznej).
                     </p>
-
                     <div class="card-action">
                         <a class="btn btn-primary card-link" href="#"
                             aria-label="Przejdź do narzędzia Analiza wersyfikacyjna">
@@ -765,40 +758,32 @@
                         </a>
                     </div>
                 </div>
-
                 <div class="project-visual">
                     <img class="project-image" src="assets/box3.png"
                         alt="Grafika dla narzędzia Analiza wersyfikacyjna" />
                 </div>
             </article>
             <article class="project-card">
-
                 <div class="project-copy">
                     <div class="project-meta">
                         <span class="project-number">04</span>
                         <span class="tag violet">Rymy</span>
                     </div>
-
                     <h3>Słownik rymów</h3>
-
                     <p>
                         Wyszukuj rymy, analizuj brzmienia i odkrywaj fonetyczne powiązania.
                     </p>
-
                     <div class="card-action">
                         <span class="btn card-link disabled-btn" aria-disabled="true">
-                            ◷&nbsp;&nbsp; Wkrótce
+                            ◷   Wkrótce
                         </span>
                     </div>
                 </div>
-
                 <div class="project-visual">
                     <img class="project-image" src="assets/box4.png" alt="Grafika dla planowanego Słownika rymów" />
                 </div>
             </article>
-
         </section>
-
         <section class="page-shell about" id="o-projekcie">
             <p class="section-kicker">O projekcie</p>
             <p>
@@ -810,42 +795,18 @@
         </section>
         <section class="page-shell development-strip" aria-label="Informacja o rozwoju projektu">
             <div class="dev-icon" aria-hidden="true"><img src="assets/work_in_progress.png" alt="icon"></div>
-
             <div class="dev-copy">
                 <strong>Projekt rozwijany na bieżąco</strong>
                 <span>
                     Projekt rośnie na bieżąco – rozwijam już dostępne narzędzia i przygotowuję nowe.
                 </span>
             </div>
-
             <a class="btn btn-secondary" href="https://github.com/monwldsk" target="_blank" rel="noopener noreferrer">
                 Zobacz na GitHub ↗
             </a>
         </section>
     </main>
 
-
-    <script>
-        const menuToggle = document.getElementById("menuToggle");
-        const mainNav = document.getElementById("mainNav");
-
-        menuToggle.addEventListener("click", () => {
-            const isOpen = mainNav.classList.toggle("open");
-            menuToggle.setAttribute("aria-expanded", String(isOpen));
-            menuToggle.setAttribute(
-                "aria-label",
-                isOpen ? "Zamknij menu" : "Otwórz menu"
-            );
-        });
-
-        mainNav.querySelectorAll("a").forEach((link) => {
-            link.addEventListener("click", () => {
-                mainNav.classList.remove("open");
-                menuToggle.setAttribute("aria-expanded", "false");
-                menuToggle.setAttribute("aria-label", "Otwórz menu");
-            });
-        });
-    </script>
 </body>
 
 </html>
